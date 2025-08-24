@@ -37,6 +37,30 @@ st.markdown("""
         border-radius: 10px;
         margin-bottom: 20px;
     }
+    .requirements-box {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+    }
+    .column-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+    .column-table th, .column-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .column-table th {
+        background-color: #f2f2f2;
+    }
+    .example-table {
+        font-size: 0.9em;
+        margin: 15px 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -97,6 +121,71 @@ def generate_sample_data():
     
     return pd.DataFrame(data)
 
+def show_data_requirements():
+    """Display data format requirements"""
+    st.markdown("""
+    <div class="requirements-box">
+        <h3>📋 Data Format Requirements</h3>
+        <p>Your file must include these columns with the exact names:</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Create a table of required columns
+    requirements_data = {
+        'Column Name': [
+            'transaction_id', 
+            'customer_id', 
+            'transaction_date', 
+            'amount', 
+            'transaction_type', 
+            'merchant_category', 
+            'status'
+        ],
+        'Description': [
+            'Unique identifier for each transaction (text)',
+            'Identifier for the customer (text)',
+            'Date of the transaction (date format)',
+            'Transaction amount (numeric)',
+            'Type of transaction (DEBIT, CREDIT, TRANSFER, PAYMENT, REFUND)',
+            'Category of the merchant (text)',
+            'Status of the transaction (SUCCESS, FAILED, PENDING, FRAUD_DETECTED)'
+        ],
+        'Required': ['Yes'] * 7
+    }
+    
+    requirements_df = pd.DataFrame(requirements_data)
+    st.table(requirements_df)
+    
+    # Show example data
+    st.markdown("""
+    <div class="requirements-box">
+        <h4>📝 Example Data Format</h4>
+        <p>Your data should look like this:</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    example_data = {
+        'transaction_id': ['TXN_000001', 'TXN_000002'],
+        'customer_id': ['CUST_00001', 'CUST_00002'],
+        'transaction_date': ['2023-01-15', '2023-01-16'],
+        'amount': [125.50, 89.99],
+        'transaction_type': ['DEBIT', 'CREDIT'],
+        'merchant_category': ['GROCERIES', 'ENTERTAINMENT'],
+        'status': ['SUCCESS', 'SUCCESS']
+    }
+    
+    example_df = pd.DataFrame(example_data)
+    st.dataframe(example_df, use_container_width=True)
+    
+    # Download template button
+    st.download_button(
+        label="📥 Download CSV Template",
+        data=pd.DataFrame(columns=requirements_data['Column Name']).to_csv(index=False),
+        file_name="transaction_data_template.csv",
+        mime="text/csv",
+        help="Download a template CSV file with the required column headers"
+    )
+
 def validate_data(df):
     """Validate the uploaded data has required columns"""
     required_columns = ['transaction_id', 'customer_id', 'transaction_date', 'amount', 
@@ -104,8 +193,9 @@ def validate_data(df):
     
     missing_columns = [col for col in required_columns if col not in df.columns]
     if missing_columns:
-        st.error(f"Missing required columns: {', '.join(missing_columns)}")
-        st.info("Please make sure your file contains these columns: " + ", ".join(required_columns))
+        st.error(f"❌ Missing required columns: {', '.join(missing_columns)}")
+        st.info("Please make sure your file contains these exact column names.")
+        show_data_requirements()
         return False
     
     # Convert date column if it exists
@@ -113,7 +203,7 @@ def validate_data(df):
         try:
             df['transaction_date'] = pd.to_datetime(df['transaction_date'])
         except:
-            st.error("Could not parse transaction_date column. Please ensure it's in a valid date format.")
+            st.error("Could not parse transaction_date column. Please ensure it's in a valid date format (YYYY-MM-DD).")
             return False
     
     # Ensure amount is numeric
@@ -232,47 +322,53 @@ def create_dashboard(df):
         st.plotly_chart(fig, use_container_width=True)
     
     # Fraud detection section
-    st.subheader("Fraud Detection Analysis")
-    fraud_data = filtered_df[filtered_df['status'] == 'FRAUD_DETECTED']
-    
-    if not fraud_data.empty:
-        col1, col2 = st.columns(2)
+    if 'FRAUD_DETECTED' in df['status'].values:
+        st.subheader("Fraud Detection Analysis")
+        fraud_data = filtered_df[filtered_df['status'] == 'FRAUD_DETECTED']
         
-        with col1:
-            fraud_by_category = fraud_data.groupby('merchant_category').size().reset_index(name='count')
-            fig = px.bar(fraud_by_category, x='merchant_category', y='count',
-                        title='Fraud Cases by Category')
-            st.plotly_chart(fig, use_container_width=True)
+        if not fraud_data.empty:
+            col1, col2 = st.columns(2)
             
-        with col2:
-            fraud_over_time = fraud_data.groupby(
-                fraud_data['transaction_date'].dt.date
-            ).size().reset_index(name='count')
-            fig = px.line(fraud_over_time, x='transaction_date', y='count',
-                         title='Fraud Cases Over Time')
-            st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.info("No fraudulent transactions detected in the selected filters.")
+            with col1:
+                fraud_by_category = fraud_data.groupby('merchant_category').size().reset_index(name='count')
+                fig = px.bar(fraud_by_category, x='merchant_category', y='count',
+                            title='Fraud Cases by Category')
+                st.plotly_chart(fig, use_container_width=True)
+                
+            with col2:
+                fraud_over_time = fraud_data.groupby(
+                    fraud_data['transaction_date'].dt.date
+                ).size().reset_index(name='count')
+                fig = px.line(fraud_over_time, x='transaction_date', y='count',
+                             title='Fraud Cases Over Time')
+                st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No fraudulent transactions detected in the selected filters.")
     
     # Data table
     st.subheader("Transaction Data Preview")
     st.dataframe(filtered_df.head(100))
 
 def main():
-    # File upload section
-    st.sidebar.header("Data Upload")
-    
+    # Header section
     st.markdown("""
     <div class="upload-section">
-        <h2>📤 Upload Your Transaction Data</h2>
-        <p>Upload an Excel or CSV file with transaction data to analyze it in the dashboard.</p>
+        <h1>💳 Fintech Transaction Dashboard</h1>
+        <p>Upload your transaction data to analyze financial patterns, detect anomalies, and visualize trends.</p>
     </div>
     """, unsafe_allow_html=True)
     
+    # Show data requirements
+    with st.expander("📋 Click to view data format requirements", expanded=True):
+        show_data_requirements()
+    
+    # File upload section
+    st.markdown("### 📤 Upload Your Transaction Data")
+    
     uploaded_file = st.file_uploader(
-        "Choose a file", 
+        "Choose a CSV or Excel file", 
         type=['csv', 'xlsx', 'xls'],
-        help="Upload a CSV or Excel file with transaction data. Required columns: transaction_id, customer_id, transaction_date, amount, transaction_type, merchant_category, status"
+        help="Upload your transaction data file. Make sure it follows the format requirements above."
     )
     
     if uploaded_file is not None:
@@ -285,11 +381,11 @@ def main():
             
             # Validate the data
             if validate_data(df):
-                st.success("File uploaded successfully!")
+                st.success("✅ File uploaded successfully!")
                 create_dashboard(df)
                 
         except Exception as e:
-            st.error(f"Error reading file: {str(e)}")
+            st.error(f"❌ Error reading file: {str(e)}")
             st.info("Please make sure you're uploading a valid CSV or Excel file.")
     else:
         st.info("👆 Upload a file to get started or use sample data below.")
