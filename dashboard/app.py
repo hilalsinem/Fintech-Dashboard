@@ -67,7 +67,7 @@ st.markdown("""
 def generate_sample_data():
     """Generate sample data if no file is uploaded"""
     np.random.seed(42)
-    random.seed(42)
+    #random.seed(42)
     
     customer_ids = [f'CUST_{i:05d}' for i in range(1, 101)]
     merchant_categories = ['GROCERIES', 'ENTERTAINMENT', 'UTILITIES', 'SHOPPING', 
