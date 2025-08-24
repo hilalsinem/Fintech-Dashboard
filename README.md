@@ -20,27 +20,32 @@ A comprehensive financial transaction analysis and visualization platform.
 ```bash
 git clone https://github.com/your-username/fintech-dashboard.git
 cd fintech-dashboard
+```
 
 ### 2. Create virtual environment
+```bash
 python -m venv venv
-
 # Windows:
 venv\Scripts\activate
-
 # macOS/Linux:
 source venv/bin/activate
+```
 
 ### 3. Install dependencies
+```bash
 pip install -r dashboard/requirements.txt
+```
 
 ### 4. Generate sample data
+```bash
 python scripts/data_generator.py
+```
 
 
 ## ▶️ Running the Dashboard
+```bash
 streamlit run dashboard/app.py
-
-
+```
 Access at: http://localhost:8501
 
 
@@ -75,29 +80,34 @@ psql -U fintech_user -d fintech_dashboard -c "\copy transactions FROM 'data/tran
 
 
 ### 3. Update .env file
-
 Add your database credentials in the .env file.
+DB_NAME=fintech_dashboard
+DB_USER=fintech_user
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+
 
 
 ## 📊 Usage
 
-Filter by date range, merchant category, transaction status
+- Filter by date range, merchant category, transaction status
 
-View key metrics and visualizations
+- View key metrics and visualizations
 
-Analyze transaction patterns and detect anomalies
+- Analyze transaction patterns and detect anomalies
 
-Explore business intelligence insights
+- Explore business intelligence insights
 
 
 ## 🧰 Technologies Used
 
-Python, Pandas, SQLAlchemy
+- Python, Pandas, SQLAlchemy
 
-PostgreSQL
+- PostgreSQL
+  
+- Streamlit
 
-Streamlit
+- Plotly, Matplotlib
 
-Plotly, Matplotlib
-
-SQL
+- SQL
