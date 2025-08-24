@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 ### 4. Generate sample data
 ```bash
-python scripts/data_generator.py
+python create_test_data.py
 ```
 
 
