@@ -1,6 +1,12 @@
 # Fintech Transaction Dashboard
 
 A comprehensive financial transaction analysis and visualization platform.
+<img width="2736" height="1660" alt="image" src="https://github.com/user-attachments/assets/a5961c08-1d15-4700-9b80-838cdcd52cb0" />
+
+<img width="2736" height="1494" alt="image" src="https://github.com/user-attachments/assets/fbbc1d26-ac9a-4899-b83c-7c9c8ab8fb07" />
+
+<img width="2736" height="1650" alt="image" src="https://github.com/user-attachments/assets/04b185a7-660f-45e8-9006-883244172ed6" />
+
 
 ---
 
