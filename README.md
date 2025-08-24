@@ -3,12 +3,15 @@
 ## A comprehensive financial transaction analysis and visualization platform.
 
 <img width="2736" height="1564" alt="image" src="https://github.com/user-attachments/assets/761f88be-22be-4728-b05a-bfa9ac16005c" />
+
 ---
 
 <img width="2736" height="1468" alt="image" src="https://github.com/user-attachments/assets/998e0057-e6fc-4b57-a122-66a1c4c52eff" />
+
 ---
 
 <img width="2736" height="1618" alt="image" src="https://github.com/user-attachments/assets/678abee9-1e6c-45b9-b89d-1d36fac4dda1" />
+
 ---
 
 <img width="2736" height="1624" alt="image" src="https://github.com/user-attachments/assets/ce83e137-935a-48eb-b2de-e5c1df7d8194" />
