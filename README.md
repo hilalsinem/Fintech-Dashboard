@@ -51,18 +51,31 @@ Access at: http://localhost:8501
 
 ## 📂 Project Structure
 fintech-dashboard/
+
 ├── data/
+
 │   └── transactions.csv
+
 ├── sql/
+
 │   ├── schema.sql
+
 │   └── queries.sql
+
 ├── scripts/
+
 │   ├── data_generator.py
+
 │   └── analysis.py
+
 ├── dashboard/
+
 │   ├── app.py
+
 │   └── requirements.txt
+
 ├── config.py
+
 └── README.md
 
 
@@ -70,21 +83,30 @@ fintech-dashboard/
 
 ### 1. Create PostgreSQL database
 CREATE DATABASE fintech_dashboard;
+
 CREATE USER fintech_user WITH PASSWORD 'your_password';
+
 GRANT ALL PRIVILEGES ON DATABASE fintech_dashboard TO fintech_user;
 
 
 ### 2. Import schema and data
 psql -U fintech_user -d fintech_dashboard -f sql/schema.sql
+
 psql -U fintech_user -d fintech_dashboard -c "\copy transactions FROM 'data/transactions.csv' CSV HEADER"
 
 
 ### 3. Update .env file
 Add your database credentials in the .env file.
+
+
 DB_NAME=fintech_dashboard
+
 DB_USER=fintech_user
+
 DB_PASSWORD=your_password
+
 DB_HOST=localhost
+
 DB_PORT=5432
 
 
