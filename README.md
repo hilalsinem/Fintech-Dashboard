@@ -1,0 +1,103 @@
+# Fintech Transaction Dashboard
+
+A comprehensive financial transaction analysis and visualization platform.
+
+---
+
+## 🚀 Features
+- Synthetic transaction data generation  
+- PostgreSQL database with optimized schema  
+- Advanced SQL analytics  
+- Interactive Streamlit dashboard  
+- Fraud detection system  
+- Business intelligence visualizations  
+
+---
+
+## 🛠️ Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/fintech-dashboard.git
+cd fintech-dashboard
+
+### 2. Create virtual environment
+python -m venv venv
+
+# Windows:
+venv\Scripts\activate
+
+# macOS/Linux:
+source venv/bin/activate
+
+### 3. Install dependencies
+pip install -r dashboard/requirements.txt
+
+### 4. Generate sample data
+python scripts/data_generator.py
+
+
+## ▶️ Running the Dashboard
+streamlit run dashboard/app.py
+
+
+Access at: http://localhost:8501
+
+
+## 📂 Project Structure
+fintech-dashboard/
+├── data/
+│   └── transactions.csv
+├── sql/
+│   ├── schema.sql
+│   └── queries.sql
+├── scripts/
+│   ├── data_generator.py
+│   └── analysis.py
+├── dashboard/
+│   ├── app.py
+│   └── requirements.txt
+├── config.py
+└── README.md
+
+
+## 🗄️ Database Setup (Optional)
+
+### 1. Create PostgreSQL database
+CREATE DATABASE fintech_dashboard;
+CREATE USER fintech_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE fintech_dashboard TO fintech_user;
+
+
+### 2. Import schema and data
+psql -U fintech_user -d fintech_dashboard -f sql/schema.sql
+psql -U fintech_user -d fintech_dashboard -c "\copy transactions FROM 'data/transactions.csv' CSV HEADER"
+
+
+### 3. Update .env file
+
+Add your database credentials in the .env file.
+
+
+## 📊 Usage
+
+Filter by date range, merchant category, transaction status
+
+View key metrics and visualizations
+
+Analyze transaction patterns and detect anomalies
+
+Explore business intelligence insights
+
+
+## 🧰 Technologies Used
+
+Python, Pandas, SQLAlchemy
+
+PostgreSQL
+
+Streamlit
+
+Plotly, Matplotlib
+
+SQL
